@@ -1,8 +1,9 @@
 from flask import current_app
 from flask_login import UserMixin
 import psycopg2
+import os
 
-conn=psycopg2.connect("dbname='myDB' user='postgres' host='localhost' password='yusufalppAAAASSSS1'")
+conn = psycopg2.connect(os.environ.get("DATABASE_URL"), sslmode='require')
 
 class User(UserMixin):
     def __init__(self, username, password, id, privelege_type):
