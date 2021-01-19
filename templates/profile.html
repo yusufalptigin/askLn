@@ -1,0 +1,234 @@
+{% extends "layout.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div style="padding:20px;margin-top:30px">
+    {%if current_user.privelege_type == True%}
+        <h1 style="text-align: center;margin-top: 10px;">Admin</h1>
+        <div style="margin: auto;margin-top: 13px;width: 10%;">
+            {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              {% for message in messages %}
+              <td>{{ message }}</td>
+              {% endfor %}
+          {% endif %}
+          {% endwith %}
+        </div>
+        {%if img%}
+        <img style="display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 20%;" src="{{img}}">
+        {%else %}
+        <form method="POST" enctype="multipart/form-data" action="{{url_for('add_image',user_id = current_user.id)}}">
+            <div style="width: 20%;margin: 10px auto 0px auto;" class="form-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" accept="image/*" id="image" name="image"  >
+                    <label class="custom-file-label">Select Image...</label>
+                </div>
+            </div>
+            <div style="width: 20%;margin: 10px auto 0px auto;"><input type="submit" class="btn btn-primary"></div>
+            
+          </form>
+        {%endif %}
+        
+          <br></br>
+        {%for user in users%}
+            {%if user[0] == current_user.id%}
+                <div style="width: 20%;margin: auto;"><td><span><i style="color: orange;"class="fas fa-info"></i> Username: {{user[1]}}</span></td></div>
+                <br></br>
+                <div class="center" style="width: 20%;margin: auto;">
+                    <td><span><i style="color: blue;"class="fas fa-user"></i> Name: {{user[3]}}</span><span style="float: right;"><form name='add' method="POST" action="{{url_for('change_name',user_id=current_user.id)}}">
+                        <input required type="text" id="name" name="name"><br><br>
+                        <button type="submit" class="btn btn-primary">Change</button>
+                    </form></span></td>
+                </div>
+                <br></br>
+                <br></br>
+                <div class="center" style="width: 20%;margin: auto;">
+                    <td><span><i style="color: blue;"class="fas fa-user"></i> Surname: {{user[4]}}</span><span style="float: right;"><form name='add' method="POST" action="{{url_for('change_surname',user_id=current_user.id)}}">
+                        <input required type="text" id="surname" name="surname"><br><br>
+                        <button type="submit" class="btn btn-primary">Change</button>
+                    </form></span></td>
+                </div>
+                <br></br>
+                <br></br>
+                <div style="width: 20%;margin: auto;"><td><span><i class="far fa-calendar-alt"></i> Registration Date: {{user[5].date()}}</span></td></div>
+                <br></br>
+            {%endif%}
+        {%endfor%}
+        {%for admin in admin%}
+            {%if current_user.id == admin[0]%}
+                <div style="width: 20%;margin: auto;"><td><span><i style="color: orange;"class="fas fa-info"></i> Expertise: {{admin[1]}}</span></td></div>
+                <br></br>
+                <div style="width: 20%;margin: auto;"><td><span><i style="color: orange;"class="fas fa-info"></i> Company: {{admin[2]}}</span></td></div>
+                <hr class="solid" style="width: 80%;margin: 10px auto 0px auto;">
+            {%endif%}
+        {%endfor%}
+        <h1 style="text-align: center;">Answer(s)</h1>
+        {%for entry in entry%}
+            {%if entry[1] == current_user.id%}
+            <div style="width: 80%;margin: auto;">
+            <form style="display: inline-block;" name='add' method="POST" action="{{url_for('delete_entry', entry_id=entry[0], privilege=current_user.privelege_type, id=current_user.id)}}">
+                <input type="radio" name="delete" required>
+                <button type="submit" class="btn btn-primary">Delete</button>
+            </form>
+            <span>
+                <div class="center" style="width: 60%;margin: auto;">
+                <h4 style="font-size: 15px;color: rgb(24, 23, 23);"><span><i class="fa fa-reply" aria-hidden="true" style="color: red;"></i> Answer: {{entry[2]}}</span><span style="float: right;"><span>{{entry[4].date()}} <i class="far fa-calendar-alt"></i></span></span></h4>
+                <p style="text-align: left;color: rgb(46, 43, 43);"> {{entry[3]}}</p>
+                
+                <td> <i class="far fa-envelope" style="color: blue;"></i> {{entry[5]}} <span style="float: right;"><form name='add' method="POST" action="{{url_for('change_email',user_id=current_user.id)}}">
+                    <input required type="text" id="surname" name="email"><br><br>
+                    <button type="submit" class="btn btn-primary">Change</button>
+                </form></span></td>
+                <br></br>
+                <br></br>
+                <br></br>
+                
+                
+                <td><i class="fas fa-phone" style="color: green;"></i> {{entry[6]}}<span style="float: right;"><form name='add' method="POST" action="{{url_for('change_phone',user_id=current_user.id)}}">
+                    <input required type="text" id="surname" name="phone"><br><br>
+                    <button type="submit" class="btn btn-primary">Change</button>
+                </form></span></td>
+                
+                <br></br>
+                {%for reply in reply%}
+                    {%if entry[0] == reply[0] %}
+                    <td>Extra Points:<span style="color: rgb(204, 0, 0);">{{reply[1]}}</span>, Given Points: <span style="color: rgb(204, 0, 0);">{{reply[2]}}</span></td>
+                </div>
+            </span>
+        </div>
+        <br></br>
+        <hr class="solid" style="width: 80%;margin: 10px auto 0px auto;">
+                    {%endif%}
+                {%endfor%}
+            {%endif%}
+        {%endfor%}
+    {%else%}
+        <h1 style="text-align: center;margin-top: 10px;">Regular</h1>
+        {%if img%}
+        <img style="display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 20%;" src="{{img}}">
+        {%else%}
+        <form method="POST" enctype="multipart/form-data" action="{{url_for('add_image',user_id = current_user.id)}}">
+            <div style="width: 20%;margin: 10px auto 0px auto;" class="form-group">
+                <div class="custom-file">
+                    <input oninput="filesize(this);" type="file" class="custom-file-input" accept="image/*" id="image" name="image"  >
+                    <label class="custom-file-label">Select Image...</label>
+                </div>
+            </div>
+            <div style="width: 20%;margin: 10px auto 0px auto;"><input type="submit" class="btn btn-primary"></div>
+            
+          </form>
+        {%endif %}
+        <br></br>
+        
+        {%for user in users%}
+            {%if user[0] == current_user.id%}
+            <div style="width: 20%;margin: auto;"><td><i style="color: orange;"class="fas fa-info"></i> Username: {{user[1]}}</td></div>
+            <br></br>
+            <div class="center" style="width: 20%;margin: auto;">
+                <td><i style="color: blue;"class="fas fa-user"></i> Name: {{user[3]}}<span style="float: right;"><form name='add' method="POST" action="{{url_for('change_name',user_id=current_user.id)}}">
+                    <input required type="text" id="name" name="name"><br><br>
+                    <button type="submit" class="btn btn-primary">Change</button>
+                </form></span></td>
+            </div>
+            <br></br>
+            <br></br>
+            <div class="center" style="width: 20%;margin: auto;">
+                <td><i style="color: blue;"class="fas fa-user"></i> Surname: {{user[4]}}<span style="float: right;"><form name='add' method="POST" action="{{url_for('change_surname',user_id=current_user.id)}}">
+                    <input required type="text" id="surname" name="surname"><br><br>
+                    <button type="submit" class="btn btn-primary">Change</button>
+                </form></span></td>
+            </div>
+            <br></br>
+            <br></br>
+            <div style="width: 20%;margin: auto;"><td><i class="far fa-calendar-alt"></i> Registration Date: {{user[5].date()}}</td></div>
+            <br></br>
+            {%endif%}
+        {%endfor%}
+        {%for regular in regular%}
+            {%if current_user.id == regular[0]%}
+            <div style="width: 20%;margin: auto;"><td><i style="color: orange;"class="fas fa-info"></i> Interest: {{regular[1]}}</td></div>
+                <br></br>
+                <div style="width: 20%;margin: auto;"><td><i style="color: orange;"class="fas fa-info"></i> Job: {{regular[2]}}</td></div>
+                <hr class="solid" style="width: 80%;margin: 10px auto 0px auto;">
+            {%endif%}
+        {%endfor%}
+        <h1 style="text-align: center;">Question(s)</h1>
+        {%for entry in entry%}
+            {%if entry[1] == current_user.id%}
+            <div style="width: 80%;margin: auto;">
+                <form style="display: inline-block;" name='add' method="POST" action="{{url_for('delete_entry', entry_id=entry[0], privilege=current_user.privelege_type, id=current_user.id)}}">
+                    <input type="radio" name="delete" required>
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </form>
+                <span>
+                    <div class="center" style="width: 60%;margin: auto;">
+                    <h4 style="font-size: 15px;color: rgb(24, 23, 23);"><i class="far fa-comment-alt" style="color: red;"></i> Question Id {{entry[0]}}: {{entry[2]}} <span style="float: right;">{{entry[4].date()}} <i class="far fa-calendar-alt"></i></span></h4>
+                    <p style="text-align: left;color: rgb(46, 43, 43);">{{entry[3]}}</p>
+                    
+                    <td><i class="far fa-envelope" style="color: blue;"></i> {{entry[5]}} <span style="float: right;"><form name='add' method="POST" action="{{url_for('change_email',user_id=current_user.id)}}">
+                        <input required type="text" id="surname" name="email"><br><br>
+                        <button type="submit" class="btn btn-primary">Change</button>
+                    </form></span></td>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    
+                    
+                    <td><i class="fas fa-phone" style="color: green;"></i> {{entry[6]}}<span style="float: right;"><form name='add' method="POST" action="{{url_for('change_phone',user_id=current_user.id)}}">
+                        <input required type="text" id="surname" name="phone"><br><br>
+                        <button type="submit" class="btn btn-primary">Change</button>
+                    </form></span></td>
+                    
+                    <br></br>
+                <br></br>
+                {%for complaint in complaint%}
+                    {%if entry[0] == complaint[0] %}
+                    <td>Status:<span style="color: rgb(204, 0, 0);">{{complaint[1]}}</span>, Category: <span style="color: rgb(204, 0, 0);">{{complaint[2]}}</span></td>
+                </div>
+            </span>
+        </div>
+        <hr class="solid" style="width: 80%;margin: 10px auto 0px auto;">
+                    {%endif%}
+                {%endfor%}
+            {%endif%}
+        {%endfor%}
+    {%endif%}
+                <div style="display: flex;justify-content: center;align-items: center;">
+                    <button onclick="print1();" type="submit" style="background-color: rgb(21, 160, 21);border-color:  rgb(21, 160, 21);margin-top: 10px;" class="btn btn-primary">Print Profile</button>
+            
+                </div>
+            
+ 
+        <form form name='add' method="POST" action="{{ url_for('logout_page', value = 3) }}">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <button type="submit" style="margin-top: 20px;margin-bottom: 20px;" class="btn btn-primary">Log out</button>
+            </div>   
+        </form>
+        <form form name='add' method="POST" action="{{ url_for('delete_user', user_id=current_user.id, privilege = current_user.privelege_type) }}">
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <button type="submit" style="background-color: red;border-color: red;margin-bottom: 20px;" class="btn btn-primary">Delete User</button>
+            </div>   
+        </form>
+        
+    
+    
+</div>
+
+
+<script>
+
+    function print1(){
+    
+      print(123)
+    }
+  
+</script>
+
+{% endblock %}
+
+

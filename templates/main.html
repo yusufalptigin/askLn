@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div style="padding:20px;margin-top:30px;">
+  <div class="ps1">
+    <h1 style="text-align:center;margin-top: 10px;">QUESTIONS/ANSWERS</h1>
+    
+    <hr class="solid" style="width: 60%;margin: 10px auto 0px auto;">
+    <div>
+    {% for entry in entry %}
+      {%for privilege in privilege%}
+        {%if ((privilege[0] == entry[1]) and (privilege[1] == False))%}
+            {%for user in users%}
+              {%if entry[1] == user[0]%}
+              <div class="center" style="width: 60%;margin: auto;">
+                <h4 style="font-size: 15px;color: rgb(24, 23, 23);"> <span><i class="far fa-comment-alt" style="color: red;"></i> Question Id {{entry[0]}}: {{entry[2]}}</span> <span style="float: right;"><span>{{entry[4].date()}} <i class="far fa-calendar-alt"></i></span></span></h4>
+                <p style="text-align: left;color: rgb(46, 43, 43);">{{entry[3]}}</p>
+                <td style="font-size: 16px;float: left;"> <span> <i class="far fa-envelope" style="color: blue;"></i> {{entry[5]}}</span> <span style="float: right;"><span>{{user[1]}} <i style="color: orange;"class="fas fa-info"></i> </span></span></td>
+                <br></br>
+                <td style="font-size: 16px;float: left;"> <span><i class="fas fa-phone" style="color: green;"></i> {{entry[6]}}</span> <span style="float: right;"><span> {{user[3]}} {{user[4]}} <i style="color: blue;"class="fas fa-user"></i> </span></span></td>
+                <br></br>
+              {%endif%}
+            {%endfor%}
+          <tr>
+            {%for complaint in complaint%}
+              {%if entry[0] == complaint[0]%}
+              <td>Status:<span style="color: rgb(204, 0, 0);">{{complaint[1]}}</span>, Category: <span style="color: rgb(204, 0, 0);">{{complaint[2]}}</span></td>
+            </div>
+              <hr class="solid" style="width: 60%;margin: 5px auto 0px auto;">
+                {%if complaint[1] == "Pending"%}
+                  <br></br>
+                  <h5 style="text-align: center;">No answer yet</h5>
+                  <hr class="solid" style="width: 60%;margin: 10px auto 0px auto;">
+                  {% else %}
+                  <br></br>
+                  {%for reply in reply%}
+                    {%if reply[3] == complaint[0]%}
+                      {%for x in entry2%}
+                        {%if (reply[0] == x[0]) %}
+                          {%for user2 in users2%}
+                            {%if x[1] == user2[0]%}
+                            <div class="center" style="width: 60%;margin: auto;">
+                              <h4 style="font-size: 15px;color: rgb(24, 23, 23);"><span><i class="fa fa-reply" aria-hidden="true" style="color: red;"></i> Answer: {{x[2]}}</span> <span style="float: right;"><span>{{x[4].date()}} <i class="far fa-calendar-alt"></i></span></span></h4>
+                              <p style="text-align: left;">{{x[3]}}</p>
+                              <td style="font-size: 16px;float: left;"> <i class="far fa-envelope" style="color: blue;"></i> {{x[5]}} <span style="float: right;"><span>{{user2[1]}} <i style="color: orange;" class="fas fa-info"></i> </span></span></td>
+                              <br></br>
+                              <td style="font-size: 16px;float: left;"> <span><i class="fas fa-phone" style="color: green;"></i> {{x[6]}} <span style="float: right;"><span> {{user2[3]}} {{user2[4]}} <i style="color: blue;"class="fas fa-user"></i> </span></span></td>
+                              <br></br>
+                            {%endif%}
+                          {%endfor%}
+                          <td>Extra Points:<span style="color: rgb(204, 0, 0);">{{reply[1]}}</span>, Given Points:<span style="color: rgb(204, 0, 0);">{{reply[2]}}</span>
+                        <span style="float: right;">
+                          {%if current_user.is_authenticated %}
+                            {%if current_user.id == entry[1] %}
+                              <form name='add' method="POST" action="{{url_for('submit', sender_id=current_user.id,receiver_id=x[1],entry_id=reply[0] )}}">
+                                Give Points: <select id="points" name="points">
+                                <option value='1'>1</option>
+                                <option value='2'>2</option>
+                                <option value='3'>3</option>
+                                <option value='4'>4</option>
+                                <option value='5'>5</option>
+                                <option value='6'>6</option>
+                                <option value='7'>7</option>
+                                <option value='8'>8</option>
+                                <option value='9'>9</option>
+                                <option value='10'>10</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                              </form>
+                            {%endif%}
+                          {%endif%}
+                        </span>
+                      </td>
+                        </div>
+                        <hr class="solid" style="width: 60%;margin: 10px auto 0px auto;">
+                        {%endif%}
+                      {%endfor%}
+                    {%endif%}
+                  {%endfor%}
+                {%endif%}
+              {%endif%}
+            {%endfor%}
+            <br></br>
+          </tr>
+        {%endif%}
+      {%endfor%}
+    {%endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

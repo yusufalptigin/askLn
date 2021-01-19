@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AdminRanks</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+    #main {
+
+  display: flex;
+  justify-content: space-around;
+}
+    #main div {
+        display: inline;
+ width: 44%;
+}
+table{
+    float: left;
+    margin: 30px 100px 0px 100px ;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+tr:nth-child(even){
+    background-color: #eee;
+}
+tr:nth-child(odd) {
+ background-color: #fff;
+}
+
+    .dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+    li {
+      float: left;
+    }
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    li a:hover:not(.active) {
+      background-color: #111;
+    }
+    .active {
+      background-color: #4CAF50;
+    }
+    ul.topnav li.right {float: right;}
+    </style>
+  </head>
+  <body style="margin: 0;background-color: grey;">
+        {%if current_user.is_authenticated %}
+            {%if current_user.privelege_type == False %}
+            <ul class="topnav">
+              <li><a href="/main">Home</a></li>
+              <li><a href="/adminRanks">Admin Ranks</a></li>
+              <li><a href="/regularRanks">Regular Ranks</a></li>
+              <li><a href="/ask/current_user.id">Ask</a></li>
+              <li class="right"><a href="{{url_for('profile',id=current_user.id)}}">Profile</a></li>
+            </ul>
+            {%else%}
+            <ul class="topnav">
+              <li><a href="/main">Home</a></li>
+              <li><a href="/adminRanks">Admin Ranks</a></li>
+              <li><a href="/regularRanks">Regular Ranks</a></li>
+              <li><a href="/answer/current_user.id">Answer</a></li>
+              <li class="right"><a href="{{url_for('profile',id=current_user.id)}}">Profile</a></li>
+            </ul>
+            {%endif%}
+        {%else%}
+            <ul class="topnav">
+              <li><a href="/main">Home</a></li>
+              <li><a href="/adminRanks">Admin Ranks</a></li>
+              <li><a href="/regularRanks">Regular Ranks</a></li>
+              <li class="right"><a href="/login">Login</a></li>
+              <li class="right"><a href="/signUp">Sign Up</a></li>
+            </ul>
+        {%endif%}
+        <div style="padding:20px;margin-top:90px;">
+        <div id="main">
+            <div>
+                <table id="t01">
+                    <tr style="background-color:  rgb(53, 48, 48);">
+                        <th style="color: white;">Username</th>
+                        <th style="color: white;">Total Points</th> 
+                    </tr>
+                    {%for ranking in ranking%}
+                        <tr>
+                            {%for user in users%}
+                                {%if user[0] == ranking[0]%}
+                                    <th>{{user[1]}}</th>
+                                    <th>{{ranking[1]}}</th>
+                                {%endif%}
+                            {%endfor%}
+                        </tr>  
+                    {%endfor%}
+            </table>
+            </div>
+            <div>
+                <table id="t01">
+                    <tr style="background-color: rgb(53, 48, 48);">
+                        <th style="color: white;">Username</th>
+                        <th style="color: white;">Total Replies</th> 
+                    </tr>
+                    {%for ranking1 in ranking1%}
+                        <tr>
+                            {%for user in users%}
+                                {%if user[0] == ranking1[0]%}
+                                    <th>{{user[1]}}</th>
+                                    <th>{{ranking1[2]}}</th>
+                                {%endif%}
+                            {%endfor%}
+                        </tr>  
+                    {%endfor%}
+            </table>
+            </div>
+            <div>
+                <table id="t01">
+                    <tr style="background-color:  rgb(53, 48, 48);">
+                        <th style="color: white;">Username</th>
+                        <th style="color: white;">Extra Points</th> 
+                    </tr>
+                    {%for ranking2 in ranking2%}
+                        <tr>
+                            {%for user in users%}
+                                {%if user[0] == ranking2[0]%}
+                                    <th>{{user[1]}}</th>
+                                    <th>{{ranking2[3]}}</th>
+                                {%endif%}
+                            {%endfor%}
+                        </tr>  
+                    {%endfor%}
+                </table>
+            </div>
+            <div>
+                <table id="t01">
+                    <tr style="background-color:  rgb(53, 48, 48);">
+                        <th style="color: white;">Username</th>
+                        <th style="color: white;">Points From Users</th> 
+                    </tr>
+                    {%for ranking3 in ranking3%}
+                        <tr>
+                            {%for user in users%}
+                                {%if user[0] == ranking3[0]%}
+                                    <th>{{user[1]}}</th>
+                                    <th>{{ranking3[4]}}</th>
+                                {%endif%}
+                            {%endfor%}
+                        </tr>  
+                    {%endfor%}
+                </table>
+            </div>
+        </div>
+           
+            
+            
+            
+        </div>
+  </body>
+</html>
+

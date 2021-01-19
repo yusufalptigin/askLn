@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}{% endblock %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <style>
+    body {margin:0;}
+    .dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+    li {
+      float: left;
+    }
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    li a:hover:not(.active) {
+      background-color: #111;
+    }
+    .active {
+      background-color: #4CAF50;
+    }
+    ul.topnav li.right {float: right;}
+    </style>
+  </head>
+  <body style="margin: 0;background-color: grey;">
+        {%if current_user.is_authenticated %}
+            {%if current_user.privelege_type == False %}
+            <ul class="topnav">
+              <li><a href="/main">Home</a></li>
+              <li><a href="/adminRanks">Admin Ranks</a></li>
+              <li><a href="/regularRanks">Regular Ranks</a></li>
+              <li><a href="/ask/current_user.id">Ask</a></li>
+              <li class="right"><a href="{{url_for('profile',id=current_user.id)}}">Profile</a></li>
+            </ul>
+            {%else%}
+            <ul class="topnav">
+              <li><a href="/main">Home</a></li>
+              <li><a href="/adminRanks">Admin Ranks</a></li>
+              <li><a href="/regularRanks">Regular Ranks</a></li>
+              <li><a href="/answer/current_user.id">Answer</a></li>
+              <li class="right"><a href="{{url_for('profile',id=current_user.id)}}">Profile</a></li>
+            </ul>
+            {%endif%}
+        {%else%}
+            <ul class="topnav">
+              <li><a href="/main">Home</a></li>
+              <li><a href="/adminRanks">Admin Ranks</a></li>
+              <li><a href="/regularRanks">Regular Ranks</a></li>
+              <li class="right"><a href="/login">Login</a></li>
+              <li class="right"><a href="/signUp">Sign Up</a></li>
+            </ul>
+        {%endif%}
+        {% block content %}{% endblock %}
+  </body>
+</html>

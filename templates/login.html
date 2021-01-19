@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <style>
+      html, body {
+      min-height: 100%;
+      }
+      body, div, form, input, select, p { 
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 16px;
+      color: #eee;
+      }
+      .main-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.5); 
+      }
+      .left-part, form {
+      padding: 25px;
+      }
+      .left-part {
+      text-align: center;
+      }
+      form {
+      background: rgba(0, 0, 0, 0.7); 
+      }
+      .title {
+      align-items: center;
+      text-align: center;
+      margin-bottom: 10px;
+      }
+      .info {
+      display: flex;
+      width: 400px;
+      flex-direction: column;
+      }
+      input, select {
+      padding: 5px;
+      margin-bottom: 30px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #eee;
+      }
+      input::placeholder {
+      color: #eee;
+      }
+      .btn-item, button {
+      padding: 10px 5px;
+      margin-top: 20px;
+      border-radius: 5px; 
+      border: none;
+      background: #830a0a; 
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 400;
+      color: #fff;
+      }
+      .btn-item {
+      display: inline-block;
+      margin: 8px 5px 20px;
+      }
+      button {
+      width: 100%;
+      }
+      button:hover, .btn-item:hover {
+      background: #aa4f4f;
+      }
+      @media (min-width: 568px) {
+      html, body {
+      height: 100%;
+      }
+      .main-block {
+      flex-direction: column;
+      height: calc(100% - 50px);
+      }
+      .left-part, form {
+        border-radius: 15px;
+      height: 350px;
+      }
+      }
+    </style>
+  </head>
+  <body style="background: grey  ">
+    <div class="main-block">
+      <form action="" method="POST">
+        <div class="title">
+          <h3 style="color: #b13d3d;text-align: center">Login</h3>
+        </div>
+        <div class="info">
+          <input required type="text" name="username" placeholder="Username">
+          <input required type="password" name="password" placeholder="Password">
+        </div>
+        <div style="margin: auto;">
+          {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <td>{{ message }}</td>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </div>
+        <button type="submit" href="/">Login</button>
+        <h4 style="color: white;text-align: center">Do not have an account? </h4>
+        <div style="text-align: center;">
+            <a  href="{{ url_for('signUp_page') }}" style="color: #b13d3d;text-decoration: none;">Sign Up! </a>
+        </div>
+        
+      </form>
+    </div>
+  </body>
+</html>
