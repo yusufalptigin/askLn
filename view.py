@@ -8,8 +8,8 @@ from flask import flash
 from werkzeug.utils import secure_filename
 import os
 
-conn = psycopg2.connect(os.environ.get("DATABASE_URL"), sslmode='require')
-#conn=psycopg2.connect("dbname='myDB' user='postgres' host='localhost' password='yusufalppAAAASSSS1'")
+#conn = psycopg2.connect(os.environ.get("DATABASE_URL"), sslmode='require')
+conn=psycopg2.connect("dbname='myDB' user='postgres' host='localhost' password='yusufalppAAAASSSS1'")
 
 def home_page():
     return render_template("home.html")
@@ -235,7 +235,7 @@ def delete_entry(entry_id, privilege, id):
             cur.execute(''' DELETE FROM entry WHERE entry_id = %s''', (entry_id,))
             conn.commit()
             cur.close()
-            return redirect(url_for("profile"))
+            return redirect(url_for("profile",id=id))
         else:
             cur.execute(''' SELECT * FROM reply WHERE entry_id = %s''', (entry_id,))
             row = cur.fetchone()
