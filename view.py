@@ -8,8 +8,8 @@ from flask import flash
 from werkzeug.utils import secure_filename
 import os
 
-#conn = psycopg2.connect(os.environ.get("DATABASE_URL"), sslmode='require')
-conn=psycopg2.connect("dbname='myDB' user='postgres' host='localhost' password='yusufalppAAAASSSS1'")
+conn = psycopg2.connect(os.environ.get("DATABASE_URL"), sslmode='require')
+#conn=psycopg2.connect("dbname='myDB' user='postgres' host='localhost' password='yusufalppAAAASSSS1'")
 
 def home_page():
     return render_template("home.html")
